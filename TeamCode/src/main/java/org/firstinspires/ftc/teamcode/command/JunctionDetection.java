@@ -1,14 +1,12 @@
 package org.firstinspires.ftc.teamcode.command;
 
-import static org.firstinspires.ftc.teamcode.util.Constants.drive;
-
 import androidx.annotation.NonNull;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.subsystem.Gripper;
-import org.firstinspires.ftc.teamcode.subsystem.Lift;
+import org.firstinspires.ftc.teamcode.subsystem.Arm;
 
 public class JunctionDetection extends Command {
     private enum SensorState {
@@ -22,15 +20,15 @@ public class JunctionDetection extends Command {
     }
 
     private final Gripper gripper;
-    private final Lift lift;
+    private final Arm arm;
     private SensorState sensorState = SensorState.JUNCTION;
     private final ElapsedTime waitTimer = new ElapsedTime();
 
 
-    public JunctionDetection(@NonNull LinearOpMode opMode, Gripper gripper, Lift lift) {
+    public JunctionDetection(@NonNull LinearOpMode opMode, Gripper gripper, Arm arm) {
         super(opMode);
         this.gripper = gripper;
-        this.lift = lift;
+        this.arm = arm;
     }
 
     @Override
@@ -42,14 +40,14 @@ public class JunctionDetection extends Command {
                 break;
             case JUNCTION:
                 if (!gripper.isInJunction()) break;
-                if (!lift.isUp()) break;
+                if (!arm.isUp()) break;
                 if (!opMode.gamepad1.left_bumper) break;
                 gripper.open();
                 waitTimer.reset();
                 sensorState = SensorState.RESET;
             case RESET:
                 if (!(waitTimer.seconds() > Constants.Grabber_Wait)) break;
-                lift.moveInitial();
+                arm.moveInitial();
                 sensorState = SensorState.DISABLED;
                 break;
         }

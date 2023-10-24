@@ -2,12 +2,7 @@ package org.firstinspires.ftc.teamcode.util;
 
 import com.acmerobotics.dashboard.config.Config;
 
-import org.firstinspires.ftc.teamcode.command.FlipConeWithGamepad;
 import org.firstinspires.ftc.teamcode.command.Sensor;
-import org.firstinspires.ftc.teamcode.opmode.auto.LeftSide;
-import org.firstinspires.ftc.teamcode.opmode.auto.sample.right.Container;
-import org.firstinspires.ftc.teamcode.opmode.auto.semiregionals.left.LeftSemiRegionals;
-import org.firstinspires.ftc.teamcode.opmode.auto.semiregionals.right.RightSemiRegionals;
 import org.firstinspires.ftc.teamcode.opmode.tuner.roadrunner.AutomaticFeedforwardTuner;
 import org.firstinspires.ftc.teamcode.opmode.tuner.roadrunner.BackAndForth;
 import org.firstinspires.ftc.teamcode.opmode.tuner.roadrunner.DriveVelocityPIDTuner;
@@ -23,35 +18,28 @@ import org.firstinspires.ftc.teamcode.opmode.tuner.roadrunner.TrackWidthTuner;
 import org.firstinspires.ftc.teamcode.opmode.tuner.roadrunner.TrackingWheelForwardOffsetTuner;
 import org.firstinspires.ftc.teamcode.opmode.tuner.roadrunner.TrackingWheelLateralDistanceTuner;
 import org.firstinspires.ftc.teamcode.opmode.tuner.roadrunner.TurnTest;
-import org.firstinspires.ftc.teamcode.subsystem.ConeFlipper;
 import org.firstinspires.ftc.teamcode.subsystem.Drive;
 import org.firstinspires.ftc.teamcode.subsystem.Gripper;
-import org.firstinspires.ftc.teamcode.subsystem.Lift;
+import org.firstinspires.ftc.teamcode.subsystem.Arm;
 import org.firstinspires.ftc.teamcode.subsystem.Vision;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequenceRunner;
 
 @Config
 public class Constants {
-    public static Lift.Constants lift;
+    public static Arm.Constants lift;
     public static Gripper.Constants gripper;
     public static Vision.Constants vision;
-    public static ConeFlipper.Constants coneFlipper;
 
 
 
 
     public static Autos autos;
     public static class Autos {
-        public static LeftSide.Constants rightSideOnly;
-        public static Container.Constants experimentalRight;
-        public static LeftSemiRegionals.Constants leftSemiRegionals;
-        public static RightSemiRegionals.Constants rightSemiRegionals;
     }
 
     public static Commands commands;
     public static class Commands {
         public static Sensor.Constants sensor;
-        public static FlipConeWithGamepad.Constants flipConeWIthGamepad;
     }
 
     public static RoadRunnerConfiguration drive;

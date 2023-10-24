@@ -10,19 +10,14 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
 public class Gripper extends Subsystem {
     public static class Constants {
-
-
-
-
         public static Hardware hardware;
         private static class Hardware {
-
             public static Servo.Direction DIRECTION = Servo.Direction.FORWARD;
-
         }
 
         public static Position position;
         private static class Position {
+            //TODO: Change
             public static volatile double FULL_OPEN = 0.76;
             public static volatile double OPEN = .78;
             public static volatile double CLOSE = .9;

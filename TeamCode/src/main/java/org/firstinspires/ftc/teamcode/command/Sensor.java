@@ -6,8 +6,8 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.subsystem.Gripper;
-import org.firstinspires.ftc.teamcode.subsystem.Lift;
-
+import org.firstinspires.ftc.teamcode.subsystem.Arm;
+@Deprecated
 public class Sensor extends Command {
     private enum SensorState {
         DISABLED,
@@ -20,15 +20,15 @@ public class Sensor extends Command {
     }
 
     private final Gripper gripper;
-    private final Lift lift;
+    private final Arm arm;
     private SensorState sensorState = SensorState.GRAB;
     private final ElapsedTime waitTimer = new ElapsedTime();
 
 
-    public Sensor(@NonNull LinearOpMode opMode, Gripper gripper, Lift lift) {
+    public Sensor(@NonNull LinearOpMode opMode, Gripper gripper, Arm arm) {
         super(opMode);
         this.gripper = gripper;
-        this.lift = lift;
+        this.arm = arm;
     }
 
     @Override
@@ -40,13 +40,13 @@ public class Sensor extends Command {
                 break;
             case GRAB:
                 if (!gripper.isInRange()) break;
-                if (!lift.isDown()) break;
+                if (!arm.isDown()) break;
                 gripper.close();
                 waitTimer.reset();
                 sensorState = SensorState.LIFT;
             case LIFT:
                 if (!(waitTimer.seconds() > Constants.LIFT_WAIT_SECONDS)) break;
-                lift.moveGroundJunction();
+//                arm.moveGroundJunction();
                 sensorState = SensorState.DISABLED;
                 break;
         }

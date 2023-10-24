@@ -13,7 +13,7 @@ import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 
 import java.util.ArrayList;
-
+@Deprecated
 public class Vision extends Subsystem {
     public AprilTagDetection tagOfInterest = null;
 

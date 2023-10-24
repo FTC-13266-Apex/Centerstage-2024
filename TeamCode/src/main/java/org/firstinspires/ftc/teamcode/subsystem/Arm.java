@@ -6,8 +6,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
-
-public class Lift extends Subsystem {
+public class Arm extends Subsystem {
     public static class Constants {
         public static Hardware hardware;
         public static Controller controller;
@@ -16,7 +15,7 @@ public class Lift extends Subsystem {
 
         public static class Hardware {
             public static DcMotorSimple.Direction LEFT_DIRECTION = DcMotorSimple.Direction.FORWARD;
-            public static DcMotorSimple.Direction RIGHT_DIRECTION = DcMotorSimple.Direction.REVERSE;
+//            public static DcMotorSimple.Direction RIGHT_DIRECTION = DcMotorSimple.Direction.REVERSE;
             public static double
                     RPM = 1150,
                     CPR = 145.090909;
@@ -30,20 +29,13 @@ public class Lift extends Subsystem {
                     F = 0;
             public static int TOLERANCE = 8;
         }
+        
         public static class Position {
             public static int
                     HIGH = 1077,
                     MID = 760,
                     LOW = 437,
-                    GROUND_JUNCTION = 200,
-                    INITIAL = 0,
-                    FLIPPED_CONE = 260,
-                    MAX_POSITION = 3000,
-                    MIN_POSITION = -70,
-                    AUTO_5CONE = 143,
-                    AUTO_4CONE = 103,
-                    AUTO_3CONE = 56,
-                    AUTO_2CONE = 0;
+                    INITIAL = 0;
         }
         public static class Speed {
             public static double NORMAL        = 10;   // ill use this but im testing something
@@ -51,37 +43,27 @@ public class Lift extends Subsystem {
 
         }
     }
-    private final DcMotorEx leftLift;
-    private final DcMotorEx rightLift;
+    
+    private final DcMotorEx arm;
     private int motorPosition;
     private boolean isMovingManually;
 
 
 
 
-    public Lift(@NonNull OpMode opMode) {
+    public Arm(@NonNull OpMode opMode) {
         super(opMode);
-        leftLift = opMode.hardwareMap.get(DcMotorEx.class, "leftLift");
-        rightLift = opMode.hardwareMap.get(DcMotorEx.class, "rightLift");
-
-        rightLift.setDirection(Constants.Hardware.RIGHT_DIRECTION);
-        leftLift.setDirection(Constants.Hardware.LEFT_DIRECTION);
+        arm = opMode.hardwareMap.get(DcMotorEx.class, "arm");
+        arm.setDirection(Constants.Hardware.LEFT_DIRECTION);
 
         // TODO: Find out what these constants are by default
 //        leftLift.setPIDFCoefficients(DcMotor.RunMode.RUN_TO_POSITION, new PIDFCoefficients(Constants.Controller.P, Constants.Controller.I, Constants.Controller.D, Constants.Controller.F));
 //        leftLift.setTargetPositionTolerance(Constants.Controller.TOLERANCE);
 
-        leftLift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        rightLift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-
-        leftLift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        rightLift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-
-        leftLift.setTargetPosition(0);
-        rightLift.setTargetPosition(0);
-
-        leftLift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        rightLift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        arm.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        arm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        arm.setTargetPosition(0);
+        arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
 
 
@@ -102,23 +84,20 @@ public class Lift extends Subsystem {
         }
 
         opMode.telemetry.addData("Slide position", motorPosition);
-        opMode.telemetry.addData("Slide P", leftLift.getPIDFCoefficients(DcMotor.RunMode.RUN_TO_POSITION).p);
-        opMode.telemetry.addData("Slide I", leftLift.getPIDFCoefficients(DcMotor.RunMode.RUN_TO_POSITION).i);
-        opMode.telemetry.addData("Slide D", leftLift.getPIDFCoefficients(DcMotor.RunMode.RUN_TO_POSITION).d);
-        opMode.telemetry.addData("Slide F", leftLift.getPIDFCoefficients(DcMotor.RunMode.RUN_TO_POSITION).f);
-        opMode.telemetry.addData("Slide Tolerance", leftLift.getTargetPositionTolerance());
+        opMode.telemetry.addData("Slide P", arm.getPIDFCoefficients(DcMotor.RunMode.RUN_TO_POSITION).p);
+        opMode.telemetry.addData("Slide I", arm.getPIDFCoefficients(DcMotor.RunMode.RUN_TO_POSITION).i);
+        opMode.telemetry.addData("Slide D", arm.getPIDFCoefficients(DcMotor.RunMode.RUN_TO_POSITION).d);
+        opMode.telemetry.addData("Slide F", arm.getPIDFCoefficients(DcMotor.RunMode.RUN_TO_POSITION).f);
+        opMode.telemetry.addData("Slide Tolerance", arm.getTargetPositionTolerance());
     }
 
     public void moveMotors(int position) {
-        if (position > Constants.Position.MAX_POSITION || position < Constants.Position.MIN_POSITION) return;
+//        if (position > Constants.Position.MAX_POSITION || position < Constants.Position.MIN_POSITION) return;
 
         this.motorPosition = position;
 
-        leftLift.setTargetPosition(position);
-        rightLift.setTargetPosition(position);
-
-        leftLift.setPower(1);
-        rightLift.setPower(1);
+        arm.setTargetPosition(position);
+        arm.setPower(1);
     }
 
     public void moveInitial() {
@@ -147,30 +126,6 @@ public class Lift extends Subsystem {
             Constants.Position.LOW = motorPosition;
         }
         moveMotors(Constants.Position.LOW);
-    }
-
-    public void moveGroundJunction() {
-        moveMotors(Constants.Position.GROUND_JUNCTION);
-    }
-
-    public void moveCone5() {
-        moveMotors(Constants.Position.AUTO_5CONE);
-    }
-
-    public void moveCone4() {
-        moveMotors(Constants.Position.AUTO_4CONE);
-    }
-
-    public void moveCone3() {
-        moveMotors(Constants.Position.AUTO_3CONE);
-    }
-
-    public void moveCone2() {
-        moveMotors(Constants.Position.AUTO_2CONE);
-    }
-
-    public void moveToPickUpFlippedCone() {
-        moveMotors(Constants.Position.FLIPPED_CONE);
     }
 
     public boolean isDown() {
