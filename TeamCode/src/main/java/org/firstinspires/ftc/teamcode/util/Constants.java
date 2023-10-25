@@ -2,7 +2,6 @@ package org.firstinspires.ftc.teamcode.util;
 
 import com.acmerobotics.dashboard.config.Config;
 
-import org.firstinspires.ftc.teamcode.command.Sensor;
 import org.firstinspires.ftc.teamcode.opmode.tuner.roadrunner.AutomaticFeedforwardTuner;
 import org.firstinspires.ftc.teamcode.opmode.tuner.roadrunner.BackAndForth;
 import org.firstinspires.ftc.teamcode.opmode.tuner.roadrunner.DriveVelocityPIDTuner;
@@ -37,10 +36,10 @@ public class Constants {
     public static class Autos {
     }
 
-    public static Commands commands;
-    public static class Commands {
-        public static Sensor.Constants sensor;
-    }
+//    public static Commands commands;
+//    public static class Commands {
+//
+//    }
 
     public static RoadRunnerConfiguration drive;
     public static class RoadRunnerConfiguration {
