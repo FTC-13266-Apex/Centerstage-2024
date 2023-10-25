@@ -74,7 +74,7 @@ public class Drive extends MecanumDrive {
             public static volatile double TRACK_WIDTH = 10.8; // in
             public static volatile double WHEEL_BASE = TRACK_WIDTH; // in
 
-            public static volatile boolean IS_FIELD_CENTRIC = true;
+            public static volatile boolean IS_FIELD_CENTRIC = false;
             public static volatile boolean USING_FINE_CONTROL = true;
 
 
@@ -120,7 +120,7 @@ public class Drive extends MecanumDrive {
              * This number is the base voltage of the battery. This number is divided the current
              * battery voltage to make a multiplier for kV, kA, and kStatic
              */
-        public static volatile double BATTERY_BASE_VOLTAGE = 13.5;
+            public static volatile double BATTERY_BASE_VOLTAGE = 13.5;
             /**
              * Set RUN_USING_ENCODER to true to enable built-in hub velocity control using drive encoders.
              * Set this flag to false if drive encoders are not present and an alternative localization
@@ -550,26 +550,57 @@ public class Drive extends MecanumDrive {
      * @param gyroAngle angle the bot is currently facing relative to start (radians)
      */
     public void driveFieldCentric(double strafeSpeed, double forwardSpeed, double turnSpeed, double gyroAngle) {
-        Vector2d input = new Vector2d(
-                strafeSpeed,
-                forwardSpeed
-        ).rotated(gyroAngle);
+//        Vector2d input = new Vector2d(
+//                strafeSpeed,
+//                forwardSpeed
+//        ).rotated(gyroAngle);
+//
+//        driveRobotCentric(
+//                input.getX(),
+//                input.getY(),
+//                turnSpeed
+//        );
 
-        driveRobotCentric(
-                input.getX(),
-                input.getY(),
-                turnSpeed
-        );
+        double y = forwardSpeed;
+        double x = strafeSpeed;
+        double rx = turnSpeed;
+
+        double botHeading = gyroAngle;
+
+        // Rotate the movement direction counter to the bot's rotation
+        double rotX = x * Math.cos(-botHeading) - y * Math.sin(-botHeading);
+        double rotY = x * Math.sin(-botHeading) + y * Math.cos(-botHeading);
+
+        rotX = rotX * 1.1;  // Counteract imperfect strafing
+
+        // Denominator is the largest motor power (absolute value) or 1
+        // This ensures all the powers maintain the same ratio,
+        // but only if at least one is out of the range [-1, 1]
+        double denominator = Math.max(Math.abs(rotY) + Math.abs(rotX) + Math.abs(rx), 1);
+        double frontLeftPower = (rotY + rotX + rx) / denominator;
+        double backLeftPower = (rotY - rotX + rx) / denominator;
+        double frontRightPower = (rotY - rotX - rx) / denominator;
+        double backRightPower = (rotY + rotX - rx) / denominator;
+
+        leftFront.setPower(frontLeftPower);
+        leftRear.setPower(backLeftPower);
+        rightFront.setPower(frontRightPower);
+        rightRear.setPower(backRightPower);
     }
-    
+
     private void driveRobotCentric(double strafeSpeed, double forwardSpeed, double turnSpeed) {
-        setWeightedDrivePower(
-                new Pose2d(
-                        forwardSpeed,
-                        -strafeSpeed,
-                        -turnSpeed
-                )
-        );
+//        setWeightedDrivePower(
+//                new Pose2d(
+//                        forwardSpeed,
+//                        -strafeSpeed,
+//                        -turnSpeed
+//                )
+//        );
+
+        leftFront.setPower(forwardSpeed + strafeSpeed + turnSpeed);
+        leftRear.setPower(forwardSpeed - strafeSpeed + turnSpeed);
+        rightFront.setPower(forwardSpeed - strafeSpeed - turnSpeed);
+        rightRear.setPower(forwardSpeed + strafeSpeed - turnSpeed);
     }
 
     public void runIteratively() {
