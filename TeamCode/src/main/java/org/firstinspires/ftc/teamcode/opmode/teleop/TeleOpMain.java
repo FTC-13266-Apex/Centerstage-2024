@@ -18,7 +18,7 @@ public class TeleOpMain extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
         Arm arm = new Arm(this);
         Gripper gripper = new Gripper(this);
-        // TODO: get this to false
+
         Drive drive = new Drive(this,true);
 
         new OptimizeStuff(this);
