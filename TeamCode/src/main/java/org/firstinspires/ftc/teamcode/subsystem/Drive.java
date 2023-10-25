@@ -21,15 +21,18 @@ import com.acmerobotics.roadrunner.trajectory.constraints.TrajectoryAcceleration
 import com.acmerobotics.roadrunner.trajectory.constraints.TrajectoryVelocityConstraint;
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.lynx.LynxModule;
+import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 import com.qualcomm.robotcore.hardware.VoltageSensor;
 import com.qualcomm.robotcore.hardware.configuration.typecontainers.MotorConfigurationType;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.util.TwoWheelTrackingLocalizer;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequenceBuilder;
@@ -42,7 +45,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.firstinspires.ftc.teamcode.subsystem.Drive.Constants.*;
-import static org.firstinspires.ftc.teamcode.subsystem.Drive.Constants.Drivetrain.MAX_RPM;
+import static org.firstinspires.ftc.teamcode.subsystem.Drive.Constants.Drivetrain.*;
 
 /*
  * Simple mecanum drive hardware implementation for REV hardware.
@@ -85,6 +88,11 @@ public class Drive extends MecanumDrive {
              * (gain greater than 1.0 corresponds to overcompensation)
              */
             public static volatile double LATERAL_MULTIPLIER = 1;
+
+            public static volatile RevHubOrientationOnRobot.LogoFacingDirection LOGO_FACING_DIR =
+                    RevHubOrientationOnRobot.LogoFacingDirection.LEFT;
+            public static volatile RevHubOrientationOnRobot.UsbFacingDirection USB_FACING_DIR =
+                    RevHubOrientationOnRobot.UsbFacingDirection.FORWARD;
 
             public static Speed speed;
             public static class Speed {
@@ -209,7 +217,7 @@ public class Drive extends MecanumDrive {
     private final DcMotorEx leftFront, leftRear, rightRear, rightFront;
     private final List<DcMotorEx> motors;
 
-    private BNO055IMU imu;
+    private IMU imu;
     private final VoltageSensor batteryVoltageSensor;
     private final OpMode opMode;
     private final ElapsedTime voltageResetTimer = new ElapsedTime();
@@ -232,9 +240,10 @@ public class Drive extends MecanumDrive {
 
         // adjust the names of the following hardware devices to match your configuration
         if(isUsingImu) {
-            imu = opMode.hardwareMap.get(BNO055IMU.class, "imu");
-            BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
-            parameters.angleUnit = BNO055IMU.AngleUnit.RADIANS;
+            imu = opMode.hardwareMap.get(IMU.class, "imu");
+            IMU.Parameters parameters = new IMU.Parameters(new RevHubOrientationOnRobot(
+                    LOGO_FACING_DIR, USB_FACING_DIR
+            ));
             imu.initialize(parameters);
         }
 
@@ -291,7 +300,7 @@ public class Drive extends MecanumDrive {
 
         // if desired, use setLocalizer() to change the localization method
         // for instance, setLocalizer(new ThreeTrackingWheelLocalizer(...));
-        setLocalizer(new TwoWheelTrackingLocalizer(opMode.hardwareMap, this));
+
 
         trajectorySequenceRunner = new TrajectorySequenceRunner(follower, Follower.HEADING_PID);
     }
@@ -503,16 +512,16 @@ public class Drive extends MecanumDrive {
 
     @Override
     public double getRawExternalHeading() {
-        return imu.getAngularOrientation().firstAngle;
+        return imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
     }
 
     @Override
     public Double getExternalHeadingVelocity() {
-        return (double) imu.getAngularVelocity().yRotationRate;
+        return (double) imu.getRobotAngularVelocity(AngleUnit.RADIANS).zRotationRate;
     }
 
     public void resetImu() {
-        imu.initialize(new BNO055IMU.Parameters());
+        imu.resetYaw();
     }
 
 
