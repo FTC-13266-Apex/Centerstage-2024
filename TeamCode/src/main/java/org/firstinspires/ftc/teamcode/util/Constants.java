@@ -20,14 +20,12 @@ import org.firstinspires.ftc.teamcode.opmode.tuner.roadrunner.TurnTest;
 import org.firstinspires.ftc.teamcode.subsystem.Drive;
 import org.firstinspires.ftc.teamcode.subsystem.Gripper;
 import org.firstinspires.ftc.teamcode.subsystem.Arm;
-import org.firstinspires.ftc.teamcode.subsystem.Vision;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequenceRunner;
 
-@Config
+//@Config
 public class Constants {
     public static Arm.Constants lift;
     public static Gripper.Constants gripper;
-    public static Vision.Constants vision;
 
 
 

@@ -229,7 +229,8 @@ public class Drive extends MecanumDrive {
         TrajectoryFollower follower = new HolonomicPIDVAFollower(Follower.TRANSLATIONAL_PID, Follower.TRANSLATIONAL_PID, Follower.HEADING_PID,
                 Follower.ADMISSIBLE_ERROR.getPose(), Follower.TIMEOUT);
 
-        LynxModuleUtil.ensureMinimumFirmwareVersion(opMode.hardwareMap);
+        // TODO: why does this make it crash?
+//        LynxModuleUtil.ensureMinimumFirmwareVersion(opMode.hardwareMap);
 
         batteryVoltageSensor = opMode.hardwareMap.voltageSensor.iterator().next();
 

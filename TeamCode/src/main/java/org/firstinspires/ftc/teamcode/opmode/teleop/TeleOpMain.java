@@ -15,8 +15,8 @@ public class TeleOpMain extends LinearOpMode {
 
     @Override
     public void runOpMode() throws InterruptedException {
-        Arm arm = new Arm(this);
-        Gripper gripper = new Gripper(this);
+//        Arm arm = new Arm(this);
+//        Gripper gripper = new Gripper(this);
 
         Drive drive = new Drive(this,true);
 
@@ -26,14 +26,14 @@ public class TeleOpMain extends LinearOpMode {
 //        Sensor sensor = new Sensor(this, gripper, arm);
 
         drive.setPoseEstimate(PoseStorage.currentPose);
-        gripper.open();
+//        gripper.open();
         telemetry.update();
 
         waitForStart();
         while (opModeIsActive()) {
-            arm.runIteratively();
+//            arm.runIteratively();
             //junction.runIteratively();
-            gripper.runIteratively();
+//            gripper.runIteratively();
 
 
             drive.runIteratively();
