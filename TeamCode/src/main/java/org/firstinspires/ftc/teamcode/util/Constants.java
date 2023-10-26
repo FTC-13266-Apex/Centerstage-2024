@@ -22,7 +22,7 @@ import org.firstinspires.ftc.teamcode.subsystem.Gripper;
 import org.firstinspires.ftc.teamcode.subsystem.Arm;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequenceRunner;
 
-//@Config
+@Config
 public class Constants {
     public static Arm.Constants lift;
     public static Gripper.Constants gripper;
@@ -39,7 +39,7 @@ public class Constants {
 //
 //    }
 
-    public static RoadRunnerConfiguration drive;
+    public static RoadRunnerConfiguration drive = new RoadRunnerConfiguration();
     public static class RoadRunnerConfiguration {
         public static Drive.Constants drivetrain;
         public static StandardTrackingWheelLocalizer.Constants deadWheels;
