@@ -107,7 +107,7 @@ public class Drive extends MecanumDrive {
             public static Direction direction;
             public static class Direction {
                 public static volatile DcMotorSimple.Direction
-                        LEFT_FRONT = DcMotorSimple.Direction.REVERSE,
+                        LEFT_FRONT = DcMotorSimple.Direction.FORWARD,
                         LEFT_REAR = DcMotorSimple.Direction.REVERSE,
                         RIGHT_FRONT = DcMotorSimple.Direction.REVERSE,
                         RIGHT_REAR = DcMotorSimple.Direction.FORWARD;
