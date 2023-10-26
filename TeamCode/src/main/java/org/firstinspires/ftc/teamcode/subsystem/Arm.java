@@ -6,6 +6,8 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.PIDFCoefficients;
+
 public class Arm extends Subsystem {
     public static class Constants {
         public static Hardware hardware;
@@ -57,8 +59,8 @@ public class Arm extends Subsystem {
         arm.setDirection(Constants.Hardware.LEFT_DIRECTION);
 
         // TODO: Find out what these constants are by default
-//        leftLift.setPIDFCoefficients(DcMotor.RunMode.RUN_TO_POSITION, new PIDFCoefficients(Constants.Controller.P, Constants.Controller.I, Constants.Controller.D, Constants.Controller.F));
-//        leftLift.setTargetPositionTolerance(Constants.Controller.TOLERANCE);
+        arm.setPIDFCoefficients(DcMotor.RunMode.RUN_TO_POSITION, new PIDFCoefficients(Constants.Controller.P, Constants.Controller.I, Constants.Controller.D, Constants.Controller.F));
+        arm .setTargetPositionTolerance(Constants.Controller.TOLERANCE);
 
         arm.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         arm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
