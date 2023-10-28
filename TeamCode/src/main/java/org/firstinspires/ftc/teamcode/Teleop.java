@@ -14,6 +14,7 @@ public class Teleop extends LinearOpMode {
         DcMotor rightFront =(DcMotor) hardwareMap.get("rightFront");
         DcMotor leftRear =(DcMotor) hardwareMap.get("leftRear");
         DcMotor rightRear =(DcMotor) hardwareMap.get("rightRear");
+       double multiplier =1;
         leftFront.setDirection(DcMotorSimple.Direction.FORWARD);
         rightFront.setDirection(DcMotorSimple.Direction.REVERSE);
         leftRear.setDirection(DcMotorSimple.Direction.REVERSE);
@@ -38,10 +39,15 @@ public class Teleop extends LinearOpMode {
             double frontRightPower = (y - x - rx) / denominator;
             double backRightPower = (y + x - rx) / denominator;
 
-            leftFront.setPower(frontLeftPower);
-            leftRear.setPower(backLeftPower);
-            rightFront.setPower(frontRightPower);
-            rightRear.setPower(backRightPower);
+            if (gamepad1.right_bumper) {
+                multiplier = 0.6;
+
+            }else multiplier = 1;
+            leftFront.setPower(frontLeftPower *multiplier );
+            leftRear.setPower(backLeftPower *multiplier);
+            rightFront.setPower(frontRightPower *multiplier);
+            rightRear.setPower(backRightPower *multiplier);
+
         }
 
     }
