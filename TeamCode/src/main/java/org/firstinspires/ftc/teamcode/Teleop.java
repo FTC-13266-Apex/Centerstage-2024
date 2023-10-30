@@ -15,6 +15,8 @@ public class Teleop extends LinearOpMode {
         DcMotor rightFront =(DcMotor) hardwareMap.get("rightFront");
         DcMotor leftRear =(DcMotor) hardwareMap.get("leftRear");
         DcMotor rightRear =(DcMotor) hardwareMap.get("rightRear");
+        DcMotor arm =(DcMotor) hardwareMap.get("arm");
+
        double multiplier =1;
         leftFront.setDirection(DcMotorSimple.Direction.FORWARD);
         rightFront.setDirection(DcMotorSimple.Direction.REVERSE);
@@ -24,7 +26,8 @@ public class Teleop extends LinearOpMode {
         rightFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         leftRear.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         rightRear.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        
+        arm.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
                 waitForStart();
         while (opModeIsActive()) {
             double y = -gamepad1.left_stick_y; // Remember, Y stick value is reversed

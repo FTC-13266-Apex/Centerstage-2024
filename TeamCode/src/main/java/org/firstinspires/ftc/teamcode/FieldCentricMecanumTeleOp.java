@@ -18,6 +18,7 @@ public class FieldCentricMecanumTeleOp extends LinearOpMode {
         DcMotor rightFront =(DcMotor) hardwareMap.get("rightFront");
         DcMotor leftRear =(DcMotor) hardwareMap.get("leftRear");
         DcMotor rightRear =(DcMotor) hardwareMap.get("rightRear");
+        DcMotor arm =(DcMotor) hardwareMap.get("arm");
 
         // Reverse the right side motors. This may be wrong for your setup.
         // If your robot moves backwards when commanded to go forwards,
@@ -31,6 +32,7 @@ public class FieldCentricMecanumTeleOp extends LinearOpMode {
         rightFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         leftRear.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         rightRear.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        arm.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         // Retrieve the IMU from the hardware map
         IMU imu = hardwareMap.get(IMU.class, "imu");
