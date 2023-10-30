@@ -28,6 +28,15 @@ public class Teleop extends LinearOpMode {
         rightRear.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         arm.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
+
+
+        int pos = arm.getCurrentPosition();
+
+        //int desiredPosition = 0; // The position (in ticks) that you want the motor to move to
+        //arm.setTargetPosition(desiredPosition); // Tells the motor that the position it should go to is desiredPosition
+        //arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+
                 waitForStart();
         while (opModeIsActive()) {
             double y = -gamepad1.left_stick_y; // Remember, Y stick value is reversed
@@ -51,6 +60,7 @@ public class Teleop extends LinearOpMode {
             leftRear.setPower(backLeftPower *multiplier);
             rightFront.setPower(frontRightPower *multiplier);
             rightRear.setPower(backRightPower *multiplier);
+            arm.setPower(backRightPower *multiplier);
 
         }
 
