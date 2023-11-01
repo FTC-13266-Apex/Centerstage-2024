@@ -15,7 +15,7 @@ public class Teleop extends LinearOpMode {
         DcMotor rightFront =(DcMotor) hardwareMap.get("rightFront");
         DcMotor leftRear =(DcMotor) hardwareMap.get("leftRear");
         DcMotor rightRear =(DcMotor) hardwareMap.get("rightRear");
-        DcMotor arm =(DcMotor) hardwareMap.get("arm");
+        DcMotor topFront =(DcMotor) hardwareMap.get("topMotor");
 
        double multiplier =1;
         leftFront.setDirection(DcMotorSimple.Direction.FORWARD);
@@ -26,11 +26,11 @@ public class Teleop extends LinearOpMode {
         rightFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         leftRear.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         rightRear.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        arm.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        topFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
 
 
-        int pos = arm.getCurrentPosition();
+        int pos = topFront.getCurrentPosition();
 
         //int desiredPosition = 0; // The position (in ticks) that you want the motor to move to
         //arm.setTargetPosition(desiredPosition); // Tells the motor that the position it should go to is desiredPosition
@@ -60,9 +60,8 @@ public class Teleop extends LinearOpMode {
             leftRear.setPower(backLeftPower *multiplier);
             rightFront.setPower(frontRightPower *multiplier);
             rightRear.setPower(backRightPower *multiplier);
-            arm.setPower(backRightPower *multiplier);
+            topFront.setPower(backRightPower *multiplier);
 
         }
-
     }
 }
