@@ -20,7 +20,7 @@ public class FieldCentricMecanumTeleOp extends LinearOpMode {
         DcMotor rightRear =(DcMotor) hardwareMap.get("rightRear");
         DcMotor topFront =(DcMotor) hardwareMap.get("topFront");
 
-        // Reverse the right side motors. This may be wrong for your setup.
+        // Reverse the right side motors. This may be wrong for your setup1.
         // If your robot moves backwards when commanded to go forwards,
         // reverse the left side instead.
         // See the note about this earlier on this page.
@@ -102,7 +102,7 @@ public class FieldCentricMecanumTeleOp extends LinearOpMode {
             // This button choice was made so that it is hard to hit on accident,
             // it can be freely changed based on preference.
             // The equivalent button is start on Xbox-style controllers.
-            if (gamepad2.options) {
+            if (gamepad2.a) {
                 imu.resetYaw();
             }
 
@@ -113,6 +113,11 @@ public class FieldCentricMecanumTeleOp extends LinearOpMode {
             double rotY = x * Math.sin(-botHeading) + y * Math.cos(-botHeading);
 
             rotX = rotX * 1.1;  // Counteract imperfect strafing
+
+
+
+
+
 
         }
     }
