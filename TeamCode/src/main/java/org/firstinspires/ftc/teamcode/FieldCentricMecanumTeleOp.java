@@ -1,24 +1,36 @@
 package org.firstinspires.ftc.teamcode;
 
+import android.graphics.RenderNode;
+
+import androidx.appcompat.app.WindowDecorActionBar;
+
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
+import com.qualcomm.robotcore.hardware.Servo;
+
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 
 @TeleOp
 public class FieldCentricMecanumTeleOp extends LinearOpMode {
+    private WindowDecorActionBar.TabImpl servoTest
+            ;
+
     @Override
     public void runOpMode() throws InterruptedException {
         // Declare our motors
         // Make sure your ID's match your configuration
+        Claw claw =new Claw(hardwareMap,gamepad2);
+
         DcMotor leftFront =(DcMotor) hardwareMap.get("leftFront");
         DcMotor rightFront =(DcMotor) hardwareMap.get("rightFront");
         DcMotor leftRear =(DcMotor) hardwareMap.get("leftRear");
         DcMotor rightRear =(DcMotor) hardwareMap.get("rightRear");
-        DcMotor topFront =(DcMotor) hardwareMap.get("topFront");
+
+        //DcMotor topFront =(DcMotor) hardwareMap.get("topFront");
 
         // Reverse the right side motors. This may be wrong for your setup1.
         // If your robot moves backwards when commanded to go forwards,
@@ -32,7 +44,8 @@ public class FieldCentricMecanumTeleOp extends LinearOpMode {
         rightFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         leftRear.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         rightRear.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        topFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
+       // topFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
 
 
@@ -46,15 +59,15 @@ public class FieldCentricMecanumTeleOp extends LinearOpMode {
         imu.initialize(parameters);
 
         waitForStart();
-
+      claw.teleOp();
         if (isStopRequested()) return;
 
         while (opModeIsActive()) {
 
 
 
-            int pos = topFront.getCurrentPosition();
-            System.out.println(pos);
+         //  int pos = .getCurrentPosition();
+            //System.out.println(pos);
             //int desiredPosition = 0; // The position (in ticks) that you want the motor to move to
             //arm.setTargetPosition(desiredPosition); // Tells the motor that the position it should go to is desiredPosition
             //arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -95,9 +108,9 @@ public class FieldCentricMecanumTeleOp extends LinearOpMode {
             rightRear.setPower(backRightPower);
 
 
-            double y = -gamepad2.left_stick_y; // Remember, Y stick value is reversed
-            double x = gamepad2.left_stick_x;
-            double rx = gamepad2.right_stick_x;
+            double left_stick_y= -gamepad2.left_stick_y; // Remember, Y stick value is reversed
+            double left_stick_x = gamepad2.left_stick_x;
+            double rightStickX = gamepad2.right_stick_x;
 
             // This button choice was made so that it is hard to hit on accident,
             // it can be freely changed based on preference.
@@ -106,18 +119,15 @@ public class FieldCentricMecanumTeleOp extends LinearOpMode {
                 imu.resetYaw();
             }
 
-            double botHeading = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
+            double Heading = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
 
             // Rotate the movement direction counter to the bot's rotation
-            double rotX = x * Math.cos(-botHeading) - y * Math.sin(-botHeading);
-            double rotY = x * Math.sin(-botHeading) + y * Math.cos(-botHeading);
+          //  double rotX = x * Math.cos(-botHeading) - y * Math.sin(-botHeading);
+          //  double rotY = x * Math.sin(-botHeading) + y * Math.cos(-botHeading);
 
             rotX = rotX * 1.1;  // Counteract imperfect strafing
 
-
-
-
-
+//
 
         }
     }
