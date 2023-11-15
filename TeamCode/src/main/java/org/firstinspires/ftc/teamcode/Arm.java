@@ -20,7 +20,7 @@ public class Arm  {
     int armUpPosition = -700;
 
     // Position of the arm when it's down
-    int armDownPosition = 0;
+    int armDownPosition = -35;
     public Arm(OpMode opMode) {
         HardwareMap hardwareMap = opMode.hardwareMap;
         tClaw = (Servo) hardwareMap.get("tClaw");
@@ -50,16 +50,16 @@ public class Arm  {
     void teleOp(){
         //Arm(HardwareMap, hardwareMap, Gamepad ,gamepad2) {
         // If the A button is pressed, raise the arm
-        if (gamepad2.a) {
-            tClaw.setPosition(0.59);
+        if (gamepad2.x) {
+            tClaw.setPosition(-0.7);
             armMotor.setTargetPosition(armUpPosition);
             armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             armMotor.setPower(0.5);
         }
 
         // If the B button is pressed, lower the arm
-        if (gamepad2.b) {
-            tClaw.setPosition(0.4);
+        if (gamepad2.y) {
+            tClaw.setPosition(0.2);
             armMotor.setTargetPosition(armDownPosition);
             armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             armMotor.setPower(0.5);

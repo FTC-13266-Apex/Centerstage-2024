@@ -11,17 +11,17 @@ public class Claw {
     private final Gamepad gamepad2;
     public Claw(OpMode opMode) {
         HardwareMap hardwareMap = opMode.hardwareMap;
-        gamepad2 = opMode.gamepad2;
+        this.gamepad2 = opMode.gamepad2;
         oClaw = (Servo) hardwareMap.get("oClaw");
 
 
-        oClaw.setDirection(Servo.Direction.REVERSE);
-        oClaw.setPosition(0.4);
+        oClaw.setDirection(Servo.Direction.FORWARD);
+        //oClaw.setPosition(0.34);
     }
     public void teleOp() {
         //TODO Change position left trigger outtake
-        if (gamepad2.dpad_up) oClaw.setPosition(0.59);
-        else if (gamepad2.dpad_right)oClaw.setPosition (0.4);
+        if (gamepad2.left_bumper) oClaw.setPosition(0.1);
+       else if (gamepad2.right_bumper)oClaw.setPosition (0.001);
     }
 
 
