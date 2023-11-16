@@ -9,7 +9,7 @@ public class FieldCentricMecanumTeleOp extends LinearOpMode {
         Drive drive = new Drive(this);
         Arm arm = new Arm(this);
         Claw claw = new Claw(this);
-       // Climber climber= new Climber(this);
+        Climber climber= new Climber(this);
         waitForStart();
 
         if (isStopRequested()) return;
@@ -18,7 +18,7 @@ public class FieldCentricMecanumTeleOp extends LinearOpMode {
             drive.teleOp();
             arm.teleOp();
             claw.teleOp();
-            //climber.teleOp();
+            climber.teleOp();
             telemetry.update();
         }
     }
