@@ -2,7 +2,6 @@ package org.firstinspires.ftc.teamcode;
 
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Gamepad;
@@ -27,13 +26,16 @@ public class Arm  {
     //the conversion rate between motor steps and servo rotation
     private static final double conversionRate = 0.0006857143;
     //the relative rotation of the claw
-    private static double tClawOffset = 0.1;
+    private double tClawOffset = 0.1;
 
+    private boolean movetClaw = false;
 
     //creates a timer to use for delaying things without pausing the whole program
     private final ElapsedTime delayTimer = new ElapsedTime();
 
+    private double delayTime = 0;
 
+    State state = State.DOWN;
     public Arm(OpMode opMode) {
         HardwareMap hardwareMap = opMode.hardwareMap;
 
@@ -53,8 +55,8 @@ public class Arm  {
 
         // Sets the starting position of the arm to the down position
         armMotor.setDirection(DcMotorSimple.Direction.REVERSE);
-        armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         armMotor.setTargetPosition(armDownPosition);
+        armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         armMotor.setPower(0.5);
         armMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
@@ -62,42 +64,65 @@ public class Arm  {
         gamepad2 = opMode.gamepad2;
 
 
-
-            
-
-
     }
+
+    private enum State {
+        DOWN,
+        MOVING_UP,
+        UP,
+    }
+
+
     void teleOp(){
+        double time = delayTimer.seconds();
+
+        double leftStickY = gamepad2.left_stick_y;
 
         double tClawPosition = tClaw.getPosition();
         double armMotorPosition = armMotor.getCurrentPosition();
         telemetry.addData("tClaw", tClawPosition);
         telemetry.addData("armMotor", armMotorPosition);
-
-
-        double leftStickY = gamepad2.left_stick_y;
-
-        if ( leftStickY < 0.1 || leftStickY > -0.1) {
-
-           tClawOffset= (leftStickY / 100 + tClawPosition);
-       }
+        telemetry.addData("time", time);
 
         tClaw.setPosition(armMotorPosition * conversionRate + tClawOffset);
 
-        // if the x button is pressed, raise the arm
-        if (gamepad2.x) {
-            tClawOffset = 0.1;
-            armMotor.setTargetPosition(armUpPosition);
-            armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            armMotor.setPower(0.25);
+        switch (state) {
+            case DOWN:
+                if (gamepad2.x) {
+                    armMotor.setTargetPosition(armUpPosition);
+                    armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                    armMotor.setPower(0.25);
+                    delayTime = 2;
+                    delayTimer.reset();
+                    state = State.MOVING_UP;
+                }
+                break;
+            case MOVING_UP:
+                if (time > delayTime) {
+                    tClawOffset = -0.1;
+                    state = State.UP;
+                }
+                break;
+            case UP:
+                if (gamepad2.y) {
+                    tClawOffset = 0.1;
+                    armMotor.setTargetPosition(armDownPosition);
+                    armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                    armMotor.setPower(0.5);
+                    state = State.DOWN;
+                }
+                break;
+
+
         }
 
-        // If the y button is pressed, lower the arm
-        if (gamepad2.y) {
-            armMotor.setTargetPosition(armDownPosition);
-            armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            armMotor.setPower(0.5);
-        }
+
+
+
+        if ( leftStickY < 0.1 || leftStickY > -0.1) {
+
+//           tClawOffset= (leftStickY / 100 + tClawPosition);
+       }
 
         // Get the current position of the armMotor
         double position = armMotor.getCurrentPosition();
@@ -113,6 +138,8 @@ public class Arm  {
 
     }
 
+    void setArmPosition(int position, double power) {
 
+    }
 
 }
