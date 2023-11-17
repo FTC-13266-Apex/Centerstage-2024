@@ -10,7 +10,7 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.internal.camera.delegating.DelegatingCaptureSequence;
 
 
-@TeleOp
+
 public class Climber {
     private final DcMotor climberMotor;
     private final DcMotor climbMotorSeries;
@@ -23,8 +23,8 @@ public class Climber {
         // Find a motor in the hardware map named "Arm Motor
         climberMotor = hardwareMap.dcMotor.get("climb motor");
         climbMotorSeries = hardwareMap.dcMotor.get("climber motor");
-        climberMotor.setDirection(DcMotorSimple.Direction.REVERSE);
-        climbMotorSeries.setDirection(DcMotorSimple.Direction.FORWARD);
+        climberMotor.setDirection(DcMotorSimple.Direction.FORWARD);
+        climbMotorSeries.setDirection(DcMotorSimple.Direction.REVERSE);
         climberMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         climbMotorSeries.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
@@ -41,10 +41,11 @@ public class Climber {
 
     }
 
-    void teleOp() {
-        double rightstick = gamepad2.right_stick_y;
 
-        if (rightstick < 0.1 ||rightstick > -0.1) {
+    void teleOp() {
+        double rightstick = -gamepad2.right_stick_y;
+
+        if (rightstick < 0.1 || rightstick > -0.1) {
 
             climberMotor.setPower(rightstick);
             climbMotorSeries.setPower(rightstick);

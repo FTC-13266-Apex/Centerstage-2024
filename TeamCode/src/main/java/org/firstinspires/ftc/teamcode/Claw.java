@@ -16,12 +16,12 @@ public class Claw {
 
 
         oClaw.setDirection(Servo.Direction.FORWARD);
-        oClaw.setPosition(0.34);
+        oClaw.setPosition(0.2);
     }
     public void teleOp() {
         //TODO Change position left trigger outtake
-        if (gamepad2.left_bumper) oClaw.setPosition(0.1);
-       else if (gamepad2.right_bumper)oClaw.setPosition (0.001);
+        if (gamepad2.left_bumper) oClaw.setPosition(0.2);
+       else if (gamepad2.right_bumper)oClaw.setPosition (0);
     }
 
 

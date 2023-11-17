@@ -4,29 +4,44 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
-@TeleOp
+
 public class Arm  {
    private final DcMotor armMotor;
     private final Gamepad gamepad2;
     private final Telemetry telemetry;
     private final Servo tClaw;
+
+
     // Position of the arm when it's lifted
-
-    int armUpPosition = -700;
-
+    private static final int armUpPosition = 700;
     // Position of the arm when it's down
-    int armDownPosition = -35;
+    private static final int armDownPosition = 0;
+    //the conversion rate between motor steps and servo rotation
+    private static final double conversionRate = 0.0006857143;
+    //the relative rotation of the claw
+    private static double tClawOffset = 0.1;
+
+
+    //creates a timer to use for delaying things without pausing the whole program
+    private final ElapsedTime delayTimer = new ElapsedTime();
+
 
     public Arm(OpMode opMode) {
         HardwareMap hardwareMap = opMode.hardwareMap;
+
+        //initialize the claw
         tClaw = (Servo) hardwareMap.get("tClaw");
         tClaw.setDirection(Servo.Direction.FORWARD);
+        tClaw.setPosition(0 * conversionRate + tClawOffset);
+
 
         // Find a motor in the hardware map named "Arm Motor
         telemetry = opMode.telemetry;
@@ -37,8 +52,11 @@ public class Arm  {
         armMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         // Sets the starting position of the arm to the down position
-        armMotor.setTargetPosition(armDownPosition);
+        armMotor.setDirection(DcMotorSimple.Direction.REVERSE);
         armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        armMotor.setTargetPosition(armDownPosition);
+        armMotor.setPower(0.5);
+        armMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
        // waitForStart();
         gamepad2 = opMode.gamepad2;
@@ -50,21 +68,32 @@ public class Arm  {
 
     }
     void teleOp(){
-        //Arm(HardwareMap, hardwareMap, Gamepad ,gamepad2) {
-        // If the A button is pressed, raise the arm
 
-        // armMotor.setTargetPosition(-35);
+        double tClawPosition = tClaw.getPosition();
+        double armMotorPosition = armMotor.getCurrentPosition();
+        telemetry.addData("tClaw", tClawPosition);
+        telemetry.addData("armMotor", armMotorPosition);
 
+
+        double leftStickY = gamepad2.left_stick_y;
+
+        if ( leftStickY < 0.1 || leftStickY > -0.1) {
+
+           tClawOffset= (leftStickY / 100 + tClawPosition);
+       }
+
+        tClaw.setPosition(armMotorPosition * conversionRate + tClawOffset);
+
+        // if the x button is pressed, raise the arm
         if (gamepad2.x) {
-            tClaw.setPosition(-0.7);
+            tClawOffset = 0.1;
             armMotor.setTargetPosition(armUpPosition);
             armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            armMotor.setPower(0.5);
+            armMotor.setPower(0.25);
         }
 
-        // If the B button is pressed, lower the arm
+        // If the y button is pressed, lower the arm
         if (gamepad2.y) {
-            tClaw.setPosition(0.2);
             armMotor.setTargetPosition(armDownPosition);
             armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             armMotor.setPower(0.5);
