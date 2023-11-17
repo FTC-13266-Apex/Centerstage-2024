@@ -28,7 +28,6 @@ public class Arm  {
     //the relative rotation of the claw
     private double tClawOffset = 0.1;
 
-    private boolean movetClaw = false;
 
     //creates a timer to use for delaying things without pausing the whole program
     private final ElapsedTime delayTimer = new ElapsedTime();
@@ -76,8 +75,6 @@ public class Arm  {
     void teleOp(){
         double time = delayTimer.seconds();
 
-        double leftStickY = gamepad2.left_stick_y;
-
         double tClawPosition = tClaw.getPosition();
         double armMotorPosition = armMotor.getCurrentPosition();
         telemetry.addData("tClaw", tClawPosition);
@@ -116,13 +113,6 @@ public class Arm  {
 
         }
 
-
-
-
-        if ( leftStickY < 0.1 || leftStickY > -0.1) {
-
-//           tClawOffset= (leftStickY / 100 + tClawPosition);
-       }
 
         // Get the current position of the armMotor
         double position = armMotor.getCurrentPosition();
