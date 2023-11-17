@@ -3,9 +3,11 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.robotcore.internal.camera.delegating.DelegatingCaptureSequence;
 
 
 @TeleOp
@@ -13,78 +15,44 @@ public class Climber {
     private final DcMotor climberMotor;
     private final DcMotor climbMotorSeries;
     private final Gamepad gamepad2;
-   private final Telemetry telemetry;
 
-    int clUpPosition = -700;
-    /// Position of the arm when it's down
-    int clDownPosition = 0;
 
-    // Position of the arm when it's lifted
     public Climber(OpMode opMode) {
        HardwareMap hardwareMap = opMode.hardwareMap;
 
         // Find a motor in the hardware map named "Arm Motor
-       telemetry = opMode.telemetry;
         climberMotor = hardwareMap.dcMotor.get("climb motor");
         climbMotorSeries = hardwareMap.dcMotor.get("climber motor");
+        climberMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+        climbMotorSeries.setDirection(DcMotorSimple.Direction.FORWARD);
+        climberMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        climbMotorSeries.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
 
         // Reset the motor encoder so that it reads zero ticks
         climberMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         climbMotorSeries.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
-        // Sets the starting position of the arm to the down position
-        climberMotor.setTargetPosition(clUpPosition);
-        climbMotorSeries.setTargetPosition(clUpPosition);
 
-        climberMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        climbMotorSeries.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        climberMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        climbMotorSeries.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-         waitForStart();
         gamepad2 = opMode.gamepad2;
-
 
     }
 
-
     void teleOp() {
-        if (gamepad2.dpad_left) {
-           climberMotor.setTargetPosition(clUpPosition);
-           climberMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-           climberMotor.setPower(0.5);
+        double rightstick = gamepad2.right_stick_y;
 
-           climbMotorSeries.setTargetPosition(clUpPosition);
-           climbMotorSeries.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-           climbMotorSeries.setPower(0.5);
+        if (rightstick < 0.1 ||rightstick > -0.1) {
 
+            climberMotor.setPower(rightstick);
+            climbMotorSeries.setPower(rightstick);
         }
-
-
-        if (gamepad2.dpad_right) {
-           climberMotor.setTargetPosition(clDownPosition);
-           climberMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-           climberMotor.setPower(0.5);
-
-            climbMotorSeries.setTargetPosition(clDownPosition);
-            climbMotorSeries.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            climbMotorSeries.setPower(0.5);
+        else {
+            climberMotor.setPower(0);
+            climbMotorSeries.setPower(0);
         }
-
-        // Get the current position of the armMotor
-        double position = climberMotor.getCurrentPosition();
-        //  double positions = climbmotorseries.getCurrentPosition();
-
-        // Get the target position of the armMotor
-        double desiredPosition = climberMotor.getTargetPosition();
-      //  double  desiredPosition = climbMotorSeries.getTargetPosition();
-
-        // Show the position of the armMotor on telemetry
-     telemetry.addData("Encoder Position", position);
-
-
-        // Show the target position of the armMotor on telemetry
-          telemetry.addData("Desired Position", desiredPosition);
-
     }
 }
 

@@ -17,10 +17,12 @@ public class Arm  {
     private final Telemetry telemetry;
     private final Servo tClaw;
     // Position of the arm when it's lifted
+
     int armUpPosition = -700;
 
     // Position of the arm when it's down
     int armDownPosition = -35;
+
     public Arm(OpMode opMode) {
         HardwareMap hardwareMap = opMode.hardwareMap;
         tClaw = (Servo) hardwareMap.get("tClaw");
@@ -50,6 +52,9 @@ public class Arm  {
     void teleOp(){
         //Arm(HardwareMap, hardwareMap, Gamepad ,gamepad2) {
         // If the A button is pressed, raise the arm
+
+        // armMotor.setTargetPosition(-35);
+
         if (gamepad2.x) {
             tClaw.setPosition(-0.7);
             armMotor.setTargetPosition(armUpPosition);
