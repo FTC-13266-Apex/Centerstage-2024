@@ -15,20 +15,20 @@ public class Drive {
     private final DcMotor rightFront;
     private final DcMotor leftRear;
     private final DcMotor rightRear;
-    private final Gamepad gamepad1 ;
+    private final Gamepad gamepad1;
     private final IMU imu;
+    private HardwareMap hardwareMap;
 
-
-    public Drive (OpMode opMode){
-        HardwareMap hardwareMap = opMode.hardwareMap;
-        gamepad1 = opMode.gamepad1;
+    public Drive(OpMode opMode) {
+       this.hardwareMap = opMode.hardwareMap;
+        this.gamepad1 = opMode.gamepad1;
 
         // Declare our motors
         // Make sure your ID's match your configuration
-        leftFront =(DcMotor) hardwareMap.get("leftFront");
-        rightFront =(DcMotor) hardwareMap.get("rightFront");
-        leftRear =(DcMotor) hardwareMap.get("leftRear");
-        rightRear =(DcMotor) hardwareMap.get("rightRear");
+        leftFront = (DcMotor) hardwareMap.get("leftFront");
+        rightFront = (DcMotor) hardwareMap.get("rightFront");
+        leftRear = (DcMotor) hardwareMap.get("leftRear");
+        rightRear = (DcMotor) hardwareMap.get("rightRear");
 
         leftFront.setDirection(DcMotorSimple.Direction.FORWARD);
         rightFront.setDirection(DcMotorSimple.Direction.REVERSE);
@@ -41,7 +41,7 @@ public class Drive {
         rightRear.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         // Retrieve the IMU from the hardware map
-         imu = hardwareMap.get(IMU.class, "imu");
+        imu = hardwareMap.get(IMU.class, "imu");
         // Adjust the orientation parameters to match your robot
         IMU.Parameters parameters = new IMU.Parameters(new RevHubOrientationOnRobot(
                 RevHubOrientationOnRobot.LogoFacingDirection.LEFT,
@@ -50,7 +50,8 @@ public class Drive {
         imu.initialize(parameters);
 
     }
-    public void teleOp(){
+
+    public void teleOp() {
         double y = -gamepad1.left_stick_y; // Remember, Y stick value is reversed
         double x = gamepad1.left_stick_x;
         double rx = gamepad1.right_stick_x;
@@ -84,6 +85,13 @@ public class Drive {
         rightFront.setPower(frontRightPower);
         rightRear.setPower(backRightPower);
 
+    }
+
+    public void setMotorPowers(double leftFront, double leftRear, double rightRear, double rightFront) {
+        this.leftFront.setPower(leftFront);
+        this.leftRear.setPower(leftRear);
+        this.rightRear.setPower(rightRear);
+        this.rightFront.setPower(rightFront);
     }
 }
 
