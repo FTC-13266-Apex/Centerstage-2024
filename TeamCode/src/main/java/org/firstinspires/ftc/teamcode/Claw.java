@@ -41,8 +41,8 @@ public class Claw {
             oClaw.setPosition(leftStickY / 500 + oclawPos);
         }
 
-        if (gamepad2.left_bumper) oClaw.setPosition(0.2);
-        if (gamepad2.right_bumper)oClaw.setPosition (0);
+        if (gamepad2.left_bumper) oClaw.setPosition(0.5);
+        if (gamepad2.right_bumper)oClaw.setPosition (0.5);
 
 
         if (gamepad2.right_trigger < 0.2)  {
