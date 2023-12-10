@@ -26,7 +26,7 @@ public class Arm  {
     //the conversion rate between motor steps and servo rotation
     private static final double conversionRate = 0.0006857143;
     //the relative rotation of the claw
-    private double tClawOffset = 0.1;
+    private double tClawOffset = 0.15;
 
 
     //creates a timer to use for delaying things without pausing the whole program
@@ -96,13 +96,13 @@ public class Arm  {
                 break;
             case MOVING_UP:
                 if (time > delayTime) {
-                    tClawOffset = -0.1;
+                    tClawOffset = -0.17;
                     state = State.UP;
                 }
                 break;
             case UP:
                 if (gamepad2.y) {
-                    tClawOffset = 0.1;
+                    tClawOffset = 0.15;
                     armMotor.setTargetPosition(armDownPosition);
                     armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                     armMotor.setPower(0.5);

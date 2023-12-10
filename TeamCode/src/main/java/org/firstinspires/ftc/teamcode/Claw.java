@@ -25,8 +25,8 @@ public class Claw {
         telemetry = opMode.telemetry;
 
         oClaw.setDirection(Servo.Direction.FORWARD);
-        Intake.setDirection(DcMotorSimple.Direction.FORWARD);
-
+       Intake.setDirection(DcMotorSimple.Direction.FORWARD);
+        oClaw.setPosition(0.87);
     }
 
     void teleOp () {
@@ -41,17 +41,21 @@ public class Claw {
             oClaw.setPosition(leftStickY / 500 + oclawPos);
         }
 
-        if (gamepad2.left_bumper) oClaw.setPosition(0.5);
-        if (gamepad2.right_bumper)oClaw.setPosition (0.5);
+        if (gamepad2.left_bumper) oClaw.setPosition(0.87);
+        if (gamepad2.right_bumper) oClaw.setPosition (0.5);
 
 
-        if (gamepad2.right_trigger < 0.2)  {
-            Intake.setPower(0);
-        }
-        else if (gamepad2.right_trigger > 0.2) {
+     if (gamepad2.right_trigger > 0.2)  {
+         Intake.setDirection(DcMotorSimple.Direction.FORWARD);
             Intake.setPower(gamepad2.right_trigger);
         }
-
+     else if (gamepad2.left_trigger > 0.2) {
+         Intake.setDirection(DcMotorSimple.Direction.REVERSE);
+           Intake.setPower(gamepad2.left_trigger);
+        }
+     else {
+         Intake.setPower(0);
+     }
 
 
     }
