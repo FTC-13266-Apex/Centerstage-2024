@@ -7,7 +7,7 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 
 @TeleOp
-public class Teleop extends LinearOpMode {
+public class BotCentric extends LinearOpMode {
 
     @Override
     public void runOpMode() throws InterruptedException {
