@@ -8,7 +8,7 @@ public class RedAuto extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
 
-        Drive drive = new Drive(this);
+        FeildCentricDrive drive = new FeildCentricDrive(this);
         //Arm arm = new Arm(this);
         //Claw claw = new Claw(this);
         //Climber climber= new Climber(this);
