@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 public class FieldCentricMecanumTeleOp extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
-        FeildCentricDrive drive = new FeildCentricDrive(this);
+        FieldCentricDrive drive = new FieldCentricDrive(this);
         //Arm arm = new Arm(this);
         //Claw claw = new Claw(this);
         //Climber climber= new Climber(this);

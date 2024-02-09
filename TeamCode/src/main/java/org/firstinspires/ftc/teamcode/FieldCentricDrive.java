@@ -12,7 +12,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 
-public class FeildCentricDrive {
+public class FieldCentricDrive {
     private final DcMotor leftFront;
     private final DcMotor rightFront;
     private final DcMotor leftRear;
@@ -34,7 +34,7 @@ public class FeildCentricDrive {
     private static final double     COUNTS_PER_INCH         = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
             (WHEEL_DIAMETER_INCHES * Math.PI);
 
-    public FeildCentricDrive(OpMode opMode) {
+    public FieldCentricDrive(OpMode opMode) {
         this.hardwareMap = opMode.hardwareMap;
         this.gamepad1 = opMode.gamepad1;
         this.telemetry = opMode.telemetry;
