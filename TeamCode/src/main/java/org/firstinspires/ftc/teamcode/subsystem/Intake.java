@@ -16,6 +16,8 @@ public class Intake  {
     private final DcMotor intake;
     private final Gamepad gamepad2;
 
+    public static double power = 1;
+
 
     public Intake (OpMode opMode) {
         HardwareMap hardwareMap = opMode.hardwareMap;
@@ -35,10 +37,10 @@ public class Intake  {
 
 
         if (gamepad2.right_trigger > 0.25) {
-            intake.setPower(1);
+            intake.setPower(power);
         }
         else if (gamepad2.left_trigger > 0.25) {
-            intake.setPower(-1);
+            intake.setPower(-power);
         }
         else {
             intake.setPower(0);

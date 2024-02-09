@@ -1,27 +1,28 @@
 package org.firstinspires.ftc.teamcode.subsystem;
 
 
+import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
-
+@Config
 public class Slides  {
     private final DcMotor leftSlide;
     private final DcMotor rightSlide;
     private final Gamepad gamepad2;
     private final Telemetry telemetry;
 
-    int intake = 0;
-    int low = 1;
-    int mid = 2;
-    int high = 3;
+    public static int intake = 0;
+    public static int low = 1;
+    public static int mid = 2;
+    public static int high = 3;
+    public static double multiplier = 10;
+    public static double power = 0.5;
     int targetPosition = intake;
 
     public Slides (OpMode opMode) {
@@ -38,14 +39,14 @@ public class Slides  {
         rightSlide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         // Sets the starting position of the arm to the down position
-        leftSlide.setDirection(DcMotorSimple.Direction.FORWARD);
-        rightSlide.setDirection(DcMotorSimple.Direction.REVERSE);
+        leftSlide.setDirection(DcMotorSimple.Direction.REVERSE);
+        rightSlide.setDirection(DcMotorSimple.Direction.FORWARD);
         leftSlide.setTargetPosition(intake);
         rightSlide.setTargetPosition(intake);
         leftSlide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         rightSlide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        leftSlide.setPower(0.5);
-        rightSlide.setPower(0.5);
+        leftSlide.setPower(power);
+        rightSlide.setPower(power);
         leftSlide.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         rightSlide.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
@@ -86,7 +87,7 @@ public class Slides  {
             targetPosition = high;
         }
         if (gamepad2.right_stick_y > 0.1 || gamepad2.right_stick_y < -0.1) {
-            targetPosition += (int) gamepad2.right_stick_y;
+            targetPosition += (int) (multiplier * gamepad2.right_stick_y);
         }
     }
 }
