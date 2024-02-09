@@ -11,6 +11,7 @@ public class FieldCentricMecanumTeleOp extends LinearOpMode {
         //Claw claw = new Claw(this);
         //Climber climber= new Climber(this);
         Slides slides = new Slides(this);
+        Intake intake = new Intake(this);
         waitForStart();
 
         if (isStopRequested()) return;
@@ -21,6 +22,7 @@ public class FieldCentricMecanumTeleOp extends LinearOpMode {
             //claw.teleOp();
             //climber.teleOp();
             slides.teleOp();
+            intake.teleOp();
             telemetry.update();
         }
     }
