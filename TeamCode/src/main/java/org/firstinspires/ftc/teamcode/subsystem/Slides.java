@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.subsystem;
 
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
@@ -52,7 +52,7 @@ public class Slides  {
         gamepad2 = opMode.gamepad2;
     }
 
-    void teleOp(){
+    public void teleOp(){
         // Get the current position of the armMotor
         double leftPosition = leftSlide.getCurrentPosition();
         double rightPosition = rightSlide.getCurrentPosition();

@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.subsystem;
 
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
@@ -31,7 +31,7 @@ public class Intake  {
         gamepad2 = opMode.gamepad2;
     }
 
-    void teleOp(){
+    public void teleOp(){
 
 
         if (gamepad2.right_trigger > 0.25) {
