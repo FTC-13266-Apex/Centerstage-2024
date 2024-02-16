@@ -89,10 +89,18 @@ public class FieldCentricDrive {
             imu.resetYaw();
         }
 
+        if (gamepad1.left_stick_button) {
+            FIELD_CENTRIC_DRIVING = !FIELD_CENTRIC_DRIVING;
+        }
+
+        if (gamepad1.right_stick_button) {
+            FIELD_CENTRIC_TURNING = !FIELD_CENTRIC_TURNING;
+        }
+
         double leftY = -gamepad1.left_stick_y; // Remember, this is reversed!
         double leftX = gamepad1.left_stick_x; // Counteract imperfect strafing
         double rightY = -gamepad1.right_stick_y;
-        double rightX = -gamepad1.right_stick_x;
+        double rightX = -gamepad1.right_stick_x; // TODO: Why is this negative?
 
         double botHeading = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
 
@@ -166,7 +174,6 @@ public class FieldCentricDrive {
         rightRear.setPower(backRightPower);
 
         telemetry.addData("heading", Math.toDegrees(botHeading));
-
     }
 
     public void setMotorPowers(double leftFront, double leftRear, double rightRear, double rightFront) {
