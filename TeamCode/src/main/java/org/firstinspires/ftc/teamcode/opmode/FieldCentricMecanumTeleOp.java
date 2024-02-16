@@ -4,6 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.subsystem.FieldCentricDrive;
 import org.firstinspires.ftc.teamcode.subsystem.Intake;
+import org.firstinspires.ftc.teamcode.subsystem.Outtake;
 import org.firstinspires.ftc.teamcode.subsystem.Slides;
 
 @TeleOp
@@ -16,6 +17,7 @@ public class FieldCentricMecanumTeleOp extends LinearOpMode {
         //Climber climber= new Climber(this);
         Slides slides = new Slides(this);
         Intake intake = new Intake(this);
+        Outtake outtake = new Outtake(this);
         waitForStart();
 
         if (isStopRequested()) return;
@@ -27,7 +29,9 @@ public class FieldCentricMecanumTeleOp extends LinearOpMode {
             //climber.teleOp();
             slides.teleOp();
             intake.teleOp();
+            outtake.teleOp();
             telemetry.update();
+
         }
     }
 }
