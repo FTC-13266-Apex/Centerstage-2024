@@ -14,11 +14,8 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
-import java.util.HashMap;
-import java.util.Map;
 
 @Config
 public class FieldCentricDrive {
@@ -28,8 +25,10 @@ public class FieldCentricDrive {
     private final DcMotor rightRear;
     private final Gamepad gamepad1;
     private final IMU imu;
-    private HardwareMap hardwareMap;
-    private Telemetry telemetry;
+    private final HardwareMap hardwareMap;
+    private final Telemetry telemetry;
+    private boolean leftStickPressed = false;
+    private boolean rightStickPressed = false;
 
     // Calculate the COUNTS_PER_INCH for your specific drive train.
     // Go to your motor vendor website to determine your motor's COUNTS_PER_MOTOR_REV
@@ -49,7 +48,8 @@ public class FieldCentricDrive {
     public static double STICK_THRESHOLD = 0.05;
 
     public static boolean FIELD_CENTRIC_DRIVING = true;
-    public static boolean FIELD_CENTRIC_TURNING = false;
+    public static boolean FIELD_CENTRIC_TURNING = true;
+
 
     public FieldCentricDrive(OpMode opMode) {
         this.hardwareMap = opMode.hardwareMap;
@@ -89,18 +89,25 @@ public class FieldCentricDrive {
             imu.resetYaw();
         }
 
-        if (gamepad1.left_stick_button) {
+
+        if (gamepad1.left_stick_button && !leftStickPressed) {
             FIELD_CENTRIC_DRIVING = !FIELD_CENTRIC_DRIVING;
+            leftStickPressed = true;
+        } else if (!gamepad1.left_stick_button) {
+            leftStickPressed = false;
         }
 
-        if (gamepad1.right_stick_button) {
+        if (gamepad1.right_stick_button && !rightStickPressed) {
             FIELD_CENTRIC_TURNING = !FIELD_CENTRIC_TURNING;
+            rightStickPressed = true;
+        } else if (!gamepad1.right_stick_button) {
+            rightStickPressed = false;
         }
 
         double leftY = -gamepad1.left_stick_y; // Remember, this is reversed!
         double leftX = gamepad1.left_stick_x; // Counteract imperfect strafing
         double rightY = -gamepad1.right_stick_y;
-        double rightX = -gamepad1.right_stick_x; // TODO: Why is this negative?
+        double rightX = gamepad1.right_stick_x; // TODO: Why is this negative?
 
         double botHeading = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
 
@@ -108,22 +115,22 @@ public class FieldCentricDrive {
         double y;
         if (FIELD_CENTRIC_DRIVING) {
             // Rotate the movement direction counter to the bot's rotation
-            Vector2d rotated2d = new Vector2d(leftX, leftY).rotated(botHeading);
+            Vector2d rotated2d = new Vector2d(leftX, leftY).rotated(-botHeading);
             x = rotated2d.getX();
             y = rotated2d.getY();
 
             x *= STRAFE_WEIGHT;  // Counteract imperfect strafing
         } else {
             x = leftX;
-            y = rightY;
+            y = leftY;
         }
 
         double turn;
         if (FIELD_CENTRIC_TURNING) {
             Vector2d turn2d = new Vector2d(rightX, rightY);
             double stickHeading = turn2d
-                    .rotated(Math.PI / 2) // Rotate by Pi / 2 Radians (90 degrees)
-                    .angle() - Math.PI; // Subtract Pi radians (180 degrees) from final angle
+                    .rotated(Math.PI / 2) // Rotate by Pi / 2 Radians (90 degrees) to move from right to top
+                    .angle() - Math.PI; // Subtract Pi radians (180 degrees) from final angle This makes the range -PI through PI instead of 0 through 2PI
 
             // Find the lowest of the 3 coterminal angles
             double defaultHeadingError = (botHeading - stickHeading); // Default angle
@@ -142,20 +149,18 @@ public class FieldCentricDrive {
 
 
             double headingP = MIN_HEADING_P + ((MAX_HEADING_P - MIN_HEADING_P) * distance);
-            turn = headingError * -headingP;
+            turn = headingError * headingP;
 
             if (distance < STICK_THRESHOLD) turn = 0;
 
             telemetry.addData("heading error", Math.toDegrees(botHeading - stickHeading));
-            telemetry.addData("theta", Math.toDegrees(stickHeading));
+            telemetry.addData("Stick Heading", Math.toDegrees(stickHeading));
 
-            telemetry.addData("low heading error", lowHeadingError);
-            telemetry.addData("default heading error", defaultHeadingError);
-            telemetry.addData("high heading error", highHeadingError);
+            telemetry.addData("low heading error", Math.toDegrees(lowHeadingError));
+            telemetry.addData("default heading error", Math.toDegrees(defaultHeadingError));
+            telemetry.addData("high heading error", Math.toDegrees(highHeadingError));
         } else {
             turn = rightX;
-
-            if (rightX < STICK_THRESHOLD) turn = 0;
         }
 
         // Denominator is the largest motor power (absolute value) or 1
