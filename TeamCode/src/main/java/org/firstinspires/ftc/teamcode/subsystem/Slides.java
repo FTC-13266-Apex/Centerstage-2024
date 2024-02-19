@@ -18,11 +18,11 @@ public class Slides  {
     private final Telemetry telemetry;
 
     public static int intake = 0;
-    public static int low = 1;
-    public static int mid = 2;
-    public static int high = 3;
+    public static int low = 2626;
+    public static int mid = 0;
+    public static int high = 3570;
     public static double multiplier = 10;
-    public static double power = 0.5;
+    public static double power = 1;
     int targetPosition = intake;
 
     public Slides (OpMode opMode) {
@@ -76,18 +76,26 @@ public class Slides  {
 
         if (gamepad2.a) {
             targetPosition= intake;
+            leftSlide.setPower(0.5);
+            rightSlide.setPower(0.5);
         }
         if (gamepad2.b) {
             targetPosition = low;
+            leftSlide.setPower(power);
+            rightSlide.setPower(power);
         }
         if (gamepad2.y) {
-            targetPosition = mid;
+            targetPosition = high;
+            leftSlide.setPower(power);
+            rightSlide.setPower(power);
         }
         if (gamepad2.x) {
-            targetPosition = high;
+            targetPosition = mid;
+            leftSlide.setPower(power);
+            rightSlide.setPower(power);
         }
         if (gamepad2.right_stick_y > 0.1 || gamepad2.right_stick_y < -0.1) {
-            targetPosition += (int) (multiplier * gamepad2.right_stick_y);
+            targetPosition += (int) (multiplier * -gamepad2.right_stick_y);
         }
     }
 }
