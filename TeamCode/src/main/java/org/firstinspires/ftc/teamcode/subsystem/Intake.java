@@ -1,22 +1,19 @@
 package org.firstinspires.ftc.teamcode.subsystem;
 
 
+import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.firstinspires.ftc.robotcore.external.Telemetry;
-
-
+@Config
 public class Intake  {
     private final DcMotor intake;
-    private final Gamepad gamepad2;
+    private final Gamepad gamepad1;
 
-    public static double power = 1;
+    public static double INTAKE_POWER = 0.3;
 
 
     public Intake (OpMode opMode) {
@@ -30,17 +27,17 @@ public class Intake  {
         intake.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         intake.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
 
-        gamepad2 = opMode.gamepad2;
+        gamepad1 = opMode.gamepad1;
     }
 
     public void teleOp(){
 
 
-        if (gamepad2.right_trigger > 0.25) {
-            intake.setPower(power);
+        if (gamepad1.right_trigger > 0.25) {
+            intake.setPower(INTAKE_POWER);
         }
-        else if (gamepad2.left_trigger > 0.25) {
-            intake.setPower(-power);
+        else if (gamepad1.left_trigger > 0.25) {
+            intake.setPower(-INTAKE_POWER);
         }
         else {
             intake.setPower(0);
