@@ -4,6 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.subsystem.FieldCentricDrive;
 import org.firstinspires.ftc.teamcode.subsystem.Intake;
+import org.firstinspires.ftc.teamcode.subsystem.Launcher;
 import org.firstinspires.ftc.teamcode.subsystem.Outtake;
 import org.firstinspires.ftc.teamcode.subsystem.Slides;
 
@@ -18,6 +19,7 @@ public class FieldCentricMecanumTeleOp extends LinearOpMode {
         Slides slides = new Slides(this);
         Intake intake = new Intake(this);
         Outtake outtake = new Outtake(this);
+        Launcher launcher = new Launcher(this);
         waitForStart();
 
         if (isStopRequested()) return;
@@ -30,6 +32,7 @@ public class FieldCentricMecanumTeleOp extends LinearOpMode {
             slides.teleOp();
             intake.teleOp();
             outtake.teleOp();
+            launcher.teleOp();
             telemetry.update();
 
         }

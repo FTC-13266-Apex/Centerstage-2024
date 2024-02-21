@@ -21,12 +21,12 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 
         public Outtake (OpMode opMode) {
             HardwareMap hardwareMap = opMode.hardwareMap;
+            telemetry = opMode.telemetry;
 
             intakeServo = hardwareMap.crservo.get("intakeServo");
             leftServo = hardwareMap.servo.get("leftServo");
             rightServo = hardwareMap.servo.get("rightServo");
 
-            telemetry = opMode.telemetry;
             gamepad1 = opMode.gamepad1;
             gamepad2 = opMode.gamepad2;
 
@@ -49,11 +49,18 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
                 intakeServo.setPower(0);
             }
             if (gamepad2.a){
-                leftServo.setPosition(1);
-                rightServo.setPosition(0);
+                leftServo.setPosition(0.935);
+                rightServo.setPosition(0.06);
             } else if (gamepad2.b || gamepad2.x || gamepad2.y) {
-                leftServo.setPosition(0.5);
-                rightServo.setPosition(0.5);
+                leftServo.setPosition(0.68);
+                rightServo.setPosition(0.32);
             }
+            if (gamepad2.left_stick_y >0.1 || gamepad2.left_stick_y <-0.1){
+                leftServo.setPosition((leftServo.getPosition())+gamepad2.left_stick_y/1000);
+                rightServo.setPosition((rightServo.getPosition())-gamepad2.left_stick_y/1000);
+            }
+            telemetry.addData("leftservo",leftServo.getPosition());
+            telemetry.addData("rightservo",rightServo.getPosition());
         }
     }
+

@@ -13,7 +13,7 @@ public class Intake  {
     private final DcMotor intake;
     private final Gamepad gamepad1;
 
-    public static double INTAKE_POWER = 0.3;
+    public static double INTAKE_POWER = 0.5;
 
 
     public Intake (OpMode opMode) {
