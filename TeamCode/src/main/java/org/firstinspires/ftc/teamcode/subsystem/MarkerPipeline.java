@@ -135,44 +135,44 @@ public class MarkerPipeline extends OpenCvPipeline {
         return rightAverage;
     }
 
-    public void setThreshold(int threshold) {
-        this.threshold = threshold;
+    public void setThreshold(int num) {
+        this.threshold = num;
     }
 
     public int getThreshold() {
         return threshold;
     }
 
-    public void setLeftRectWidthPercentage(double topRectWidthPercentage) {
-        this.leftRectWidthPercentage = topRectWidthPercentage;
+    public void setLeftRectWidthPercentage(double num) {
+        this.leftRectWidthPercentage = num;
     }
 
-    public void setLeftRectHeightPercentage(double topRectWidthPercentage) {
-        this.leftRectHeightPercentage = topRectWidthPercentage;
+    public void setLeftRectHeightPercentage(double num) {
+        this.leftRectHeightPercentage = num;
     }
 
-    public void setCenterRectWidthPercentage(double topRectHeightPercentage) {
-        this.centerRectWidthPercentage = topRectHeightPercentage;
+    public void setCenterRectWidthPercentage(double num) {
+        this.centerRectWidthPercentage = num;
     }
 
-    public void setCenterRectHeightPercentage(double topRectHeightPercentage) {
-        this.centerRectHeightPercentage = topRectHeightPercentage;
+    public void setCenterRectHeightPercentage(double num) {
+        this.centerRectHeightPercentage = num;
     }
 
-    public void setRightRectWidthPercentage(double topRectHeightPercentage) {
-        this.rightRectWidthPercentage = topRectHeightPercentage;
+    public void setRightRectWidthPercentage(double num) {
+        this.rightRectWidthPercentage = num;
     }
 
-    public void setRightRectHeightPercentage(double topRectHeightPercentage) {
-        this.rightRectHeightPercentage = topRectHeightPercentage;
+    public void setRightRectHeightPercentage(double num) {
+        this.rightRectHeightPercentage = num;
     }
 
-    public void setRectangleWidth(int rectangleWidth) {
-        this.rectangleWidth = rectangleWidth;
+    public void setRectangleWidth(int num) {
+        this.rectangleWidth = num;
     }
 
-    public void setRectangleHeight(int rectangleHeight) {
-        this.rectangleHeight = rectangleHeight;
+    public void setRectangleHeight(int num) {
+        this.rectangleHeight = num;
     }
 
 }

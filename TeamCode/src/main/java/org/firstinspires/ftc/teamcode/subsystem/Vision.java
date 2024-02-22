@@ -12,7 +12,7 @@ import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvInternalCamera;
 
 
-public class FFVision extends SubsystemBase {
+public class Vision extends SubsystemBase {
     public enum FFPosition  {
         LEFT,
         MIDDLE,
@@ -26,7 +26,7 @@ public class FFVision extends SubsystemBase {
 
     public static int CAMERA_WIDTH = 432, CAMERA_HEIGHT = 240;
     public static OpenCvCameraRotation ORIENTATION = OpenCvCameraRotation.UPRIGHT;
-    public FFVision(HardwareMap hw, Telemetry tl) {
+    public Vision(HardwareMap hw, Telemetry tl) {
         hardwareMap = hw;
         telemetry = tl;
         init();
