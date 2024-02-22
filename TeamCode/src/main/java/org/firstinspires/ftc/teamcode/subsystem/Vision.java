@@ -1,7 +1,6 @@
 package org.firstinspires.ftc.teamcode.subsystem;
 
 
-import com.arcrobotics.ftclib.command.SubsystemBase;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
@@ -12,14 +11,14 @@ import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvInternalCamera;
 
 
-public class Vision extends SubsystemBase {
-    public enum FFPosition  {
+public class Vision {
+    public enum Position {
         LEFT,
         MIDDLE,
         RIGHT
     }
     private final Telemetry telemetry;
-    private FFPosition finalPos;
+    private Position finalPos;
     private OpenCvCamera camera;
     private final HardwareMap hardwareMap;
     private MarkerPipeline pipeline;
@@ -73,7 +72,6 @@ public class Vision extends SubsystemBase {
     }
 
 
-    @Override
     public void periodic() {
 //        currentPos = duckDetector.getPosition();
 //        telemetry.addData("Position", duckDetector.getPosition());
@@ -83,10 +81,10 @@ public class Vision extends SubsystemBase {
 
     }
 
-    public void setPosition(FFPosition position) {
+    public void setPosition(Position position) {
         finalPos = position;
     }
-    public FFPosition getFinalPosition() {
+    public Position getFinalPosition() {
         return finalPos;
     }
 
@@ -107,20 +105,20 @@ public class Vision extends SubsystemBase {
         pipeline.setRectangleWidth(w);
     }
 
-    public FFPosition getPosition() {
+    public Position getPosition() {
 //        Util.logger(this, Level.INFO, "Left Avg: ", getLeftAverage());
 
         if(pipeline.getLeftAverage() > pipeline.getCenterAverage() && pipeline.getLeftAverage() > pipeline.getRightAverage()){
-            return FFPosition.LEFT;
+            return Position.LEFT;
         }
         else if(pipeline.getCenterAverage() > pipeline.getLeftAverage() && pipeline.getCenterAverage() > pipeline.getRightAverage()){
-            return FFPosition.MIDDLE;
+            return Position.MIDDLE;
         }
         else if(pipeline.getRightAverage() > pipeline.getLeftAverage() && pipeline.getRightAverage() > pipeline.getCenterAverage()){
-            return FFPosition.RIGHT;
+            return Position.RIGHT;
         }
         else{
-            return FFPosition.LEFT;
+            return Position.LEFT;
         }
     }
     public void stopFFVision() {
