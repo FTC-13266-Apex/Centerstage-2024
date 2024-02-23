@@ -53,7 +53,7 @@ public class TrajectorySequenceContainer {
                 trajectorySequenceBuilder = trajectorySequenceBuilder.setReversed(((SetReversed) pathSegment).reversed);
 
             if (pathSegment.getClass() == Turn.class)
-                trajectorySequenceBuilder = trajectorySequenceBuilder.turn(((Turn) pathSegment).angle);
+                trajectorySequenceBuilder = trajectorySequenceBuilder.turn(Math.toRadians(((Turn) pathSegment).angle));
 
         }
         trajectorySequence = trajectorySequenceBuilder.build();

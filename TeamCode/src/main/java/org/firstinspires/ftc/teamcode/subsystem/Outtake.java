@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.subsystem;
 
+import android.drm.DrmStore;
+
 import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.CRServo;
@@ -18,6 +20,13 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
         private final Servo leftServo;
         private final Servo rightServo;
         private final CRServo intakeServo;
+        final double intakeLeftPos = 0.935;
+        final double intakeRightPos = 0.06;
+        final double outtakeLeftPos = 0.68;
+        final double outtakeRightPos = 0.32;
+
+        double leftTarget = intakeLeftPos;
+        double rightTarget = intakeRightPos;
 
         public Outtake (OpMode opMode) {
             HardwareMap hardwareMap = opMode.hardwareMap;
@@ -37,6 +46,9 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 
         public void teleOp() {
 
+            leftServo.setPosition(leftTarget);
+            rightServo.setPosition(rightTarget);
+
             if (gamepad1.right_trigger >0.1){
 
                 intakeServo.setPower(1);
@@ -49,11 +61,12 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
                 intakeServo.setPower(0);
             }
             if (gamepad2.a){
-                leftServo.setPosition(0.935);
-                rightServo.setPosition(0.06);
+                leftTarget = intakeLeftPos;
+                rightTarget = intakeRightPos;
+
             } else if (gamepad2.b || gamepad2.x || gamepad2.y) {
-                leftServo.setPosition(0.68);
-                rightServo.setPosition(0.32);
+                leftTarget = outtakeLeftPos;
+                rightTarget = outtakeRightPos;
             }
             if (gamepad2.left_stick_y >0.1 || gamepad2.left_stick_y <-0.1){
                 leftServo.setPosition((leftServo.getPosition())+gamepad2.left_stick_y/1000);
